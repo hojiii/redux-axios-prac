@@ -1,4 +1,5 @@
-import axios from "axios";
+// import axios from "axios";
+import api from "./axios/api";
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -12,21 +13,22 @@ function App() {
 
   //조회함수
   const fetchTodos = async () => {
-    const { data } = await axios.get("http://localhost:4000/todos");
+    // const { data } = await axios.get("http://localhost:4000/todos");
+    const { data } = await api.get("/todos");
     //console.log("data", data);
     setTodos(data);
   };
 
   //추가함수
   const onSubmitHandler = async () => {
-    axios.post("http://localhost:4000/todos", inputValue);
+    api.post("/todos", inputValue);
     //setTodos([...todos, inputValue]);
     fetchTodos();
   };
 
   //삭제함수
   const onDeletebuttomClickHandler = async (id) => {
-    axios.delete(`http://localhost:4000/todos/${id}`);
+    api.delete(`/todos/${id}`);
     setTodos(
       todos.filter((item) => {
         return item.id !== id;
@@ -36,7 +38,7 @@ function App() {
 
   //수정 함수
   const onUpdateButtonClickHandler = async () => {
-    axios.patch(`http://localhost:4000/todos/${targetId}`, {
+    api.patch(`${process.env.REACT_APP_SERVER_URL}/todos/${targetId}`, {
       title: contents,
     });
     setTodos(
